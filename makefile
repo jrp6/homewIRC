@@ -1,0 +1,29 @@
+CC=gcc
+CFLAGS=-c -iquote common -O -g -Wextra -Wall -Werror -Wfloat-equal -Wshadow -Wstrict-prototypes -Wswitch-enum
+LDFLAGS=
+
+SOURCES_COMMON = common/hello.c
+SOURCES_CLIENT = client/main.c
+SOURCES_SERVER = server/main.c
+
+OBJECTS_COMMON = $(SOURCES_COMMON:.c=.o)
+OBJECTS_CLIENT = $(SOURCES_CLIENT:.c=.o)
+OBJECTS_SERVER = $(SOURCES_SERVER:.c=.o)
+
+EXECUTABLE_CLIENT = homewirc
+EXECUTABLE_SERVER = homewircd
+
+all: $(EXECUTABLE_CLIENT) $(EXECUTABLE_SERVER)
+
+$(EXECUTABLE_CLIENT): $(OBJECTS_COMMON) $(OBJECTS_CLIENT)
+	$(CC) $(LDFLAGS) $(OBJECTS_COMMON) $(OBJECTS_CLIENT) -o $@
+
+$(EXECUTABLE_SERVER): $(OBJECTS_COMMON) $(OBJECTS_SERVER)
+	$(CC) $(LDFLAGS) $(OBJECTS_COMMON) $(OBJECTS_SERVER) -o $@
+
+%.o: %.c
+	$(CC) $(CFLAGS) $< -o $@
+
+.PHONY: clean
+clean:
+	rm -f $(OBJECTS_COMMON) $(OBJECTS_CLIENT) $(OBJECTS_SERVER) $(EXECUTABLE_CLIENT) $(EXECUTABLE_SERVER)

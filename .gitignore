@@ -21,6 +21,8 @@
 *.dylib
 
 # Executables
+homewirc
+homewircd
 *.exe
 *.out
 *.app
