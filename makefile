@@ -1,10 +1,10 @@
 CC=gcc
 CFLAGS=-c -iquote common -O -g -Wextra -Wall -Werror -Wfloat-equal -Wshadow -Wstrict-prototypes -Wswitch-enum
-LDFLAGS=
+LDFLAGS=-levent
 
 SOURCES_COMMON = common/hello.c
 SOURCES_CLIENT = client/main.c
-SOURCES_SERVER = server/main.c
+SOURCES_SERVER = server/main.c server/accept_cb.c
 
 OBJECTS_COMMON = $(SOURCES_COMMON:.c=.o)
 OBJECTS_CLIENT = $(SOURCES_CLIENT:.c=.o)
@@ -16,10 +16,10 @@ EXECUTABLE_SERVER = homewircd
 all: $(EXECUTABLE_CLIENT) $(EXECUTABLE_SERVER)
 
 $(EXECUTABLE_CLIENT): $(OBJECTS_COMMON) $(OBJECTS_CLIENT)
-	$(CC) $(LDFLAGS) $(OBJECTS_COMMON) $(OBJECTS_CLIENT) -o $@
+	$(CC) $(OBJECTS_COMMON) $(OBJECTS_CLIENT) $(LDFLAGS) -o $@
 
 $(EXECUTABLE_SERVER): $(OBJECTS_COMMON) $(OBJECTS_SERVER)
-	$(CC) $(LDFLAGS) $(OBJECTS_COMMON) $(OBJECTS_SERVER) -o $@
+	$(CC) $(OBJECTS_COMMON) $(OBJECTS_SERVER) $(LDFLAGS) -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) $< -o $@
