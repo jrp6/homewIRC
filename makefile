@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-c -iquote common -O -g -Wextra -Wall -Werror -Wfloat-equal -Wshadow -Wstrict-prototypes -Wswitch-enum
 LDFLAGS=-levent
 
-SOURCES_COMMON = common/hello.c common/echo_cb.c
+SOURCES_COMMON = common/hello.c common/echo_cb.c common/close_on_error_eof_cb.c
 SOURCES_CLIENT = client/main.c
 SOURCES_SERVER = server/main.c server/accept_cb.c
 
