@@ -9,8 +9,19 @@
 #include "defaults.h"
 #include "echo_cb.h"
 
+// TODO: Remove these after removing the ugly hack
+#include "message.h"
+#include <stdlib.h>
+
 int main(void)
 {
+  // Ugly hack for testing if message parsing and stringifying works. TODO: unit tests
+  struct message test = parseMessage("NICK juhorp");
+  char *str = stringifyMessage(test);
+  puts(str);
+  free(str);
+  freeMessage(test);
+
   struct event_base *base;
   struct bufferevent *bev;
   struct sockaddr_in sin;
