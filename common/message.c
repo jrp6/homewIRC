@@ -72,11 +72,8 @@ struct message parseMessage(const char *msgstr_)
   msg.argv = NULL;
 
   // Remove terminating \r\n or \n
-  // Kinda ugly and repetitive, TODO: make less ugly
-  char *terminator = strstr(msgstr, "\r\n");
-  if (terminator) {
-    *terminator = '\0';
-  } else if ((terminator = strchr(msgstr, '\n'))) {
+  char *terminator;
+  if ((terminator = strstr(msgstr, "\r\n")) || (terminator = strchr(msgstr, '\n'))) {
     *terminator = '\0';
   }
 
