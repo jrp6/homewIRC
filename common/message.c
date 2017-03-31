@@ -66,7 +66,7 @@ static enum message_type strtoenum(const char *str) {
 
 struct message parseMessage(const char *msgstr_)
 {
-  char *msgstr = malloc((strlen(msgstr_) + 1) * sizeof(char));
+  char *msgstr = calloc((strlen(msgstr_) + 1), sizeof(char));
   strcpy(msgstr, msgstr_);
 
   struct message msg;
@@ -81,11 +81,19 @@ struct message parseMessage(const char *msgstr_)
     *terminator = '\0';
   }
 
+  // Get the last argument. Skip the first character in case it is a : for the source
+  char *last = NULL;
+  const char *lastStart = strchr(msgstr + 1, ':');
+  if (lastStart) {
+    last = calloc(strlen(lastStart), sizeof(char));
+    strcpy(last, lastStart + 1);
+  }
+
   const char *delim = " ";
   char **saveptr = malloc(sizeof(char *));
 
+  // Get the source and type
   char *typeStr;
-  // Get the source
   char *source = strtok_r(msgstr, delim, saveptr);
   if (*source == ':') {
     typeStr = strtok_r(NULL, delim, saveptr);
@@ -107,12 +115,20 @@ struct message parseMessage(const char *msgstr_)
       argv_size = (argv_size == 0) ? 1 : 2 * argv_size;
       msg.argv = realloc(msg.argv, argv_size * sizeof(char *));
     }
+    if (*arg == ':') {
+      break;
+    }
 
     msg.argv[msg.argc] = malloc((strlen(arg) + 1) * sizeof(char));
     strcpy(msg.argv[msg.argc], arg);
 
     ++(msg.argc);
     arg = strtok_r(NULL, delim, saveptr);
+  }
+
+  if (last) {
+    msg.argv[msg.argc] = last;
+    ++(msg.argc);
   }
 
   free(msgstr);
@@ -140,10 +156,10 @@ char * stringifyMessage(const struct message msg)
   // This could be optimized by not repeatedly calling strcat
   for (unsigned int i = 0; i < msg.argc; ++i) {
     char *arg = msg.argv[i];
-    if (strlen(str) + strlen(arg) + 1 >= strsize) {
+    while (strlen(str) + strlen(arg) + 1 >= strsize) {
       strsize *= 2;
-      str = realloc(str, strsize * sizeof(char));
     }
+    str = realloc(str, strsize * sizeof(char));
     strcat(str, arg);
     strcat(str, " ");
   }
