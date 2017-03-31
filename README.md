@@ -3,6 +3,7 @@ An IRC client and server I wrote for homework
 
 # TODO
 * Replace debug messages by printing with a proper logging facility
+* Handle malformed input
 
 # Compiling and running
 Dependencies: libevent.
