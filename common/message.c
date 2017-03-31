@@ -3,6 +3,9 @@
 #include "message.h"
 
 void freeMessage(struct message msg) {
+  if (msg.source) {
+    free(msg.source);
+  }
   for (unsigned int i = 0; i < msg.argc; ++i) {
     free((msg.argv)[i]);
   }
@@ -67,6 +70,7 @@ struct message parseMessage(const char *msgstr_)
   strcpy(msgstr, msgstr_);
 
   struct message msg;
+  msg.source = NULL;
   msg.type = MSG_INVALID;
   msg.argc = 0;
   msg.argv = NULL;
@@ -80,8 +84,19 @@ struct message parseMessage(const char *msgstr_)
   const char *delim = " ";
   char **saveptr = malloc(sizeof(char *));
 
-  // Get the message type
-  char *typeStr = strtok_r(msgstr, delim, saveptr);
+  char *typeStr;
+  // Get the source
+  char *source = strtok_r(msgstr, delim, saveptr);
+  if (*source == ':') {
+    typeStr = strtok_r(NULL, delim, saveptr);
+
+    ++source;
+    msg.source = malloc((strlen(source) + 1) * sizeof(char));
+    strcpy(msg.source, source);
+  } else {
+    typeStr = source;
+  }
+
   msg.type = strtoenum(typeStr);
 
   // Parse the arguments
@@ -107,11 +122,18 @@ struct message parseMessage(const char *msgstr_)
 
 char * stringifyMessage(const struct message msg)
 {
-  unsigned int strsize = 16;
+  unsigned int strsize = (msg.source ? strlen(msg.source) : 0) + 16;
   char *str = calloc(strsize, sizeof(char));
 
+  // Get the message source
+  if (msg.source) {
+    *str = ':';
+    strncat(str, msg.source, strsize - 1);
+    strcat(str, " ");
+  }
+
   // Get the message type
-  strncat(str, enumtostr(msg.type), strsize - 1);
+  strncat(str, enumtostr(msg.type), strsize - strlen(str) - 1);
   strcat(str, " ");
 
   // Add the arguments

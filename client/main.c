@@ -19,7 +19,7 @@
 int main(int argc, char **argv)
 {
   // Ugly hack for testing if message parsing and stringifying works. TODO: unit tests
-  struct message test = parseMessage("NICK juhorp");
+  struct message test = parseMessage(":Juhorp!~juhorp@unaffiliated/juhorp PRIVMSG   #foo :bar  baz");
   char *str = stringifyMessage(test);
   puts(str);
   free(str);

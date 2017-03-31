@@ -12,6 +12,7 @@ enum message_type {
 };
 
 struct message {
+  char *source;
   enum message_type type;
   unsigned int argc;
   char **argv;
