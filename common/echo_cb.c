@@ -5,15 +5,27 @@
 #include <stdlib.h>
 
 #include "echo_cb.h"
-
-#define BUFSIZE 1024
+#include "message.h"
 
 void echo_cb(struct bufferevent *bev, void *ctx) {
   (void)ctx;
 
-  char *buf = malloc(BUFSIZE * sizeof(char));
-  size_t n = bufferevent_read(bev, buf, BUFSIZE * sizeof(char) - 1);
-  buf[n] = '\0';
-  fputs(buf, stdout);
-  free(buf);
+  struct evbuffer *evbuf = evbuffer_new();
+  bufferevent_read_buffer(bev, evbuf);
+
+  char *buf = evbuffer_readln(evbuf, NULL, EVBUFFER_EOL_ANY);
+
+  while (buf) {
+    puts(buf);
+
+    struct message msg = parseMessage(buf);
+    char *str = stringifyMessage(msg);
+
+    fputs(str, stdout);
+
+    freeMessage(msg);
+    free(str);
+    free(buf);
+    buf = evbuffer_readln(evbuf, NULL, EVBUFFER_EOL_ANY);
+  }
 }
