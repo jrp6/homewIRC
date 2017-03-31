@@ -5,7 +5,7 @@
 #include <string.h>
 #include <sys/socket.h>
 
-#include "close_on_error_eof_cb.h"
+#include "nick_on_connect_cb.h"
 #include "defaults.h"
 #include "echo_cb.h"
 
@@ -29,7 +29,7 @@ int main(void)
   base = event_base_new();
   bev = bufferevent_socket_new(base, -1, BEV_OPT_CLOSE_ON_FREE);
 
-  bufferevent_setcb(bev, echo_cb, NULL, close_on_error_eof_cb, base);
+  bufferevent_setcb(bev, echo_cb, NULL, nick_on_connect_cb, base);
   bufferevent_enable(bev, EV_READ|EV_WRITE);
 
   memset(&sin, 0, sizeof(sin));
