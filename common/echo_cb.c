@@ -25,4 +25,6 @@ void echo_cb(struct bufferevent *bev, void *ctx) {
     free(buf);
     buf = evbuffer_readln(evbuf, NULL, EVBUFFER_EOL_ANY);
   }
+
+  evbuffer_free(evbuf);
 }
