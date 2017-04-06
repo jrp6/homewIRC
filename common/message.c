@@ -168,7 +168,7 @@ char * stringifyMessage(const struct message msg)
   // This could be optimized by not repeatedly calling strcat
   for (unsigned int i = 0; i < msg.argc; ++i) {
     char *arg = msg.argv[i];
-    while (strlen(str) + strlen(arg) + 1 >= strsize) {
+    while (strlen(str) + strlen(arg) + 2 >= strsize) {
       strsize *= 2;
     }
     str = realloc(str, strsize * sizeof(char));
