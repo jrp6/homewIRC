@@ -1,14 +1,16 @@
 #include <event2/bufferevent.h>
 #include <event2/buffer.h>
-
-#include <stdio.h>
 #include <stdlib.h>
 
-#include "echo_cb.h"
-#include "logMessage.h"
+#include "defaults.h"
 #include "message.h"
 
-void echo_cb(struct bufferevent *bev, void *ctx) {
+#ifdef SERVER_DEBUG
+#include <stdio.h>
+#include "logMessage.h"
+#endif
+
+void serverRead_cb(struct bufferevent *bev, void *ctx) {
   (void)ctx;
 
   struct evbuffer *evbuf = evbuffer_new();
@@ -17,14 +19,9 @@ void echo_cb(struct bufferevent *bev, void *ctx) {
   char *buf = evbuffer_readln(evbuf, NULL, EVBUFFER_EOL_ANY);
 
   while (buf) {
+    #ifdef SERVER_DEBUG
     puts(buf);
-
-    struct message msg = parseMessage(buf);
-    logMessage(msg);
-    freeMessage(msg);
-    free(buf);
+    #endif
     buf = evbuffer_readln(evbuf, NULL, EVBUFFER_EOL_ANY);
   }
-
-  evbuffer_free(evbuf);
 }

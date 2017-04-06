@@ -2,9 +2,9 @@ CC=gcc
 CFLAGS=-c -iquote common -O -g -Wextra -Wall -Werror -Wfloat-equal -Wshadow -Wstrict-prototypes -Wswitch-enum
 LDFLAGS=-levent
 
-SOURCES_COMMON = common/echo_cb.c common/close_on_error_eof_cb.c common/logMessage.c common/message.c common/replyPing.c
+SOURCES_COMMON = common/close_on_error_eof_cb.c common/logMessage.c common/message.c common/replyPing.c
 SOURCES_CLIENT = client/main.c client/clientRead_cb.c client/nick_on_connect_cb.c client/command_cb.c
-SOURCES_SERVER = server/main.c server/accept_cb.c server/connection.c
+SOURCES_SERVER = server/main.c server/accept_cb.c server/connection.c server/serverRead_cb.c
 
 OBJECTS_COMMON = $(SOURCES_COMMON:.c=.o)
 OBJECTS_CLIENT = $(SOURCES_CLIENT:.c=.o)
