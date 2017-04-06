@@ -49,14 +49,9 @@ int main(int argc, char **argv)
   }
 
   // Connect and start reading and writing
-  struct event_base *base;
-  struct bufferevent *bev;
-  struct evdns_base *dns_base;
-
-  base = event_base_new();
-  dns_base = evdns_base_new(base, 1);
-
-  bev = bufferevent_socket_new(base, -1, BEV_OPT_CLOSE_ON_FREE);
+  struct event_base *base = event_base_new();
+  struct bufferevent *bev = bufferevent_socket_new(base, -1, BEV_OPT_CLOSE_ON_FREE);
+  struct evdns_base *dns_base = evdns_base_new(base, 1);
 
   bufferevent_setcb(bev, clientRead_cb, NULL, nick_on_connect_cb, base);
   bufferevent_enable(bev, EV_READ|EV_WRITE);
@@ -66,6 +61,11 @@ int main(int argc, char **argv)
     bufferevent_free(bev);
     exit(EXIT_FAILURE);
   }
+
+  // Open and read stdin
+  struct bufferevent *bev_stdin = bufferevent_socket_new(base, STDIN_FILENO, 0);
+  bufferevent_setcb(bev_stdin, echo_cb, NULL, NULL, base);
+  bufferevent_enable(bev_stdin, EV_READ);
 
   event_base_dispatch(base);
 
