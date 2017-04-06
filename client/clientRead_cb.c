@@ -37,6 +37,7 @@ void clientRead_cb(struct bufferevent *bev, void *ctx) {
     case MSG_JOIN:
     case MSG_PART:
     case MSG_QUIT:
+    case MSG_CMD_CHANNEL:
     case MSG_INVALID:
       break;
     }

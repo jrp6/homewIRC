@@ -11,6 +11,7 @@ enum message_type {
   MSG_JOIN,
   MSG_PART,
   MSG_QUIT,
+  MSG_CMD_CHANNEL,
 };
 
 struct message {
@@ -21,6 +22,7 @@ struct message {
 };
 
 void freeMessage(struct message msg);
+int isLocal(enum message_type type);
 
 // Parse a message terminated by \0, \r\n or \n
 struct message parseMessage(const char* msgstr);

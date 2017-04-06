@@ -40,6 +40,9 @@ static char * enumtostr(const enum message_type t) {
   case MSG_QUIT:
     return "QUIT";
     break;
+  case MSG_CMD_CHANNEL:
+    return "CHANNEL";
+    break;
   case MSG_INVALID:
   default:
     break;
@@ -73,7 +76,14 @@ static enum message_type strtoenum(const char *str) {
   if (strcmp(str, "QUIT") == 0) {
     return MSG_QUIT;
   }
+  if (strcmp(str, "CHANNEL") == 0) {
+    return MSG_CMD_CHANNEL;
+  }
   return MSG_INVALID;
+}
+
+int isLocal(enum message_type type) {
+  return type == MSG_CMD_CHANNEL;
 }
 
 struct message parseMessage(const char *msgstr_)
