@@ -13,19 +13,8 @@
 #include "defaults.h"
 #include "echo_cb.h"
 
-// TODO: Remove these after removing the ugly hack
-#include "message.h"
-#include <stdlib.h>
-
 int main(int argc, char **argv)
 {
-  // Ugly hack for testing if message parsing and stringifying works. TODO: unit tests
-  struct message test = parseMessage(":Juhorp!~juhorp@unaffiliated/juhorp PRIVMSG   #foo :bar  baz");
-  char *str = stringifyMessage(test);
-  puts(str);
-  free(str);
-  freeMessage(test);
-
   // Parse command-line options
   char *server = NULL;
   unsigned int port = DEFAULT_PORT;
