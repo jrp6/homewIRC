@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "echo_cb.h"
+#include "logMessage.h"
 #include "message.h"
 
 void echo_cb(struct bufferevent *bev, void *ctx) {
@@ -19,12 +20,8 @@ void echo_cb(struct bufferevent *bev, void *ctx) {
     puts(buf);
 
     struct message msg = parseMessage(buf);
-    char *str = stringifyMessage(msg);
-
-    fputs(str, stdout);
-
+    logMessage(msg);
     freeMessage(msg);
-    free(str);
     free(buf);
     buf = evbuffer_readln(evbuf, NULL, EVBUFFER_EOL_ANY);
   }
