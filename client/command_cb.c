@@ -22,9 +22,11 @@ void command_cb(struct bufferevent *bev_stdin, void *ctx)
   while (buf) {
     struct message msg;
     if (*buf == '/') {
-      // Send the command straight to the server if it is valid
       msg = parseMessage(buf + 1);
-      if (msg.type != MSG_INVALID) {
+      if (msg.type == MSG_CMD_CHANNEL) {
+        strncpy(currentChannel, msg.argv[0], 128);
+      } else if (msg.type != MSG_INVALID) {
+        // Send the command straight to the server if it is valid and not CHANNEL
         if (msg.type == MSG_JOIN) {
           char *channel = msg.argv[msg.argc - 1];
           if (*channel != ':') {
@@ -49,10 +51,12 @@ void command_cb(struct bufferevent *bev_stdin, void *ctx)
       msg.argc = 2;
     }
 
-    char *str = stringifyMessage(msg);
-    bufferevent_write(bev, str, strlen(str));
+    if (!isLocal(msg.type)) {
+      char *str = stringifyMessage(msg);
+      bufferevent_write(bev, str, strlen(str));
+      free(str);
+    }
 
-    free(str);
     freeMessage(msg);
     free(buf);
     buf = evbuffer_readln(evbuf, NULL, EVBUFFER_EOL_ANY);
