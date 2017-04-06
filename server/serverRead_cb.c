@@ -11,6 +11,7 @@
 #endif
 
 void serverRead_cb(struct bufferevent *bev, void *ctx) {
+  //struct connection *conn = ctx;
   (void)ctx;
 
   struct evbuffer *evbuf = evbuffer_new();
@@ -19,9 +20,29 @@ void serverRead_cb(struct bufferevent *bev, void *ctx) {
   char *buf = evbuffer_readln(evbuf, NULL, EVBUFFER_EOL_ANY);
 
   while (buf) {
-    #ifdef SERVER_DEBUG
+    struct message msg = parseMessage(buf);
+#ifdef SERVER_DEBUG
     puts(buf);
-    #endif
+    logMessage(msg);
+#endif
+
+    switch (msg.type) {
+    case MSG_NICK:
+      // TODO: Change nick
+    case MSG_USER:
+      // TODO: Change hostmask
+    case MSG_PING:
+    case MSG_PONG:
+    case MSG_PRIVMSG:
+    case MSG_JOIN:
+    case MSG_PART:
+    case MSG_QUIT:
+    case MSG_CMD_CHANNEL:
+    case MSG_INVALID:
+      break;
+    }
+
+    free(buf);
     buf = evbuffer_readln(evbuf, NULL, EVBUFFER_EOL_ANY);
   }
 }
