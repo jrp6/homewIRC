@@ -3,4 +3,6 @@
 
 #define DEFAULT_PORT 6667
 
+#define CLIENT_DEBUG
+
 #endif

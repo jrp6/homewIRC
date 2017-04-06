@@ -8,6 +8,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+#include "clientRead_cb.h"
 #include "nick_on_connect_cb.h"
 #include "defaults.h"
 #include "echo_cb.h"
@@ -57,7 +58,7 @@ int main(int argc, char **argv)
 
   bev = bufferevent_socket_new(base, -1, BEV_OPT_CLOSE_ON_FREE);
 
-  bufferevent_setcb(bev, echo_cb, NULL, nick_on_connect_cb, base);
+  bufferevent_setcb(bev, clientRead_cb, NULL, nick_on_connect_cb, base);
   bufferevent_enable(bev, EV_READ|EV_WRITE);
 
   if (bufferevent_socket_connect_hostname(bev, dns_base, AF_UNSPEC, server, port) < 0) {
