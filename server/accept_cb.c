@@ -8,7 +8,7 @@
 
 #include "accept_cb.h"
 #include "close_on_error_eof_cb.h"
-#include "echo_cb.h"
+#include "serverRead_cb.h"
 
 void accept_conn_cb(struct evconnlistener *listener, evutil_socket_t fd,
                            struct sockaddr *address, int socklen, void *ctx) {
@@ -21,7 +21,7 @@ void accept_conn_cb(struct evconnlistener *listener, evutil_socket_t fd,
   struct bufferevent *bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
 
   // Add callback that prints everything we get
-  bufferevent_setcb(bev, echo_cb, NULL, close_on_error_eof_cb, NULL);
+  bufferevent_setcb(bev, serverRead_cb, NULL, close_on_error_eof_cb, NULL);
 
   bufferevent_enable(bev, EV_READ|EV_WRITE);
 

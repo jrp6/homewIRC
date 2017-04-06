@@ -7,4 +7,8 @@
 #undef CLIENT_DEBUG
 #endif
 
+#ifndef SERVER_DEBUG
+#define SERVER_DEBUG
+#endif
+
 #endif
