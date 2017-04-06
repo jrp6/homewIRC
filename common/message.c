@@ -97,8 +97,8 @@ struct message parseMessage(const char *msgstr_)
   char *last = NULL;
   const char *lastStart = strchr(msgstr + 1, ':');
   if (lastStart) {
-    last = calloc(strlen(lastStart), sizeof(char));
-    strcpy(last, lastStart + 1);
+    last = calloc(strlen(lastStart) + 1, sizeof(char));
+    strcpy(last, lastStart);
   }
 
   const char *delim = " ";
