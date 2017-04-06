@@ -3,6 +3,6 @@
 
 #include <event2/bufferevent.h>
 
-void command_cb(struct bufferevent *bev, void *ctx);
+void command_cb(struct bufferevent *bev_stdin, void *ctx);
 
 #endif

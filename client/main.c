@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 
   // Open and read stdin
   struct bufferevent *bev_stdin = bufferevent_socket_new(base, STDIN_FILENO, 0);
-  bufferevent_setcb(bev_stdin, command_cb, NULL, NULL, base);
+  bufferevent_setcb(bev_stdin, command_cb, NULL, NULL, bev);
   bufferevent_enable(bev_stdin, EV_READ);
 
   event_base_dispatch(base);
