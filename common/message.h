@@ -5,6 +5,8 @@ enum message_type {
   MSG_INVALID,
   MSG_NICK,
   MSG_USER,
+  MSG_PING,
+  MSG_PONG,
   MSG_PRIVMSG,
   MSG_JOIN,
   MSG_PART,

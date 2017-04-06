@@ -22,6 +22,12 @@ static char * enumtostr(const enum message_type t) {
   case MSG_USER:
     return "USER";
     break;
+  case MSG_PING:
+    return "PING";
+    break;
+  case MSG_PONG:
+    return "PONG";
+    break;
   case MSG_PRIVMSG:
     return "PRIVMSG";
     break;
@@ -48,6 +54,12 @@ static enum message_type strtoenum(const char *str) {
   }
   if (strcmp(str, "USER") == 0) {
     return MSG_USER;
+  }
+  if (strcmp(str, "PING") == 0) {
+    return MSG_PING;
+  }
+  if (strcmp(str, "PONG") == 0) {
+    return MSG_PONG;
   }
   if (strcmp(str, "PRIVMSG") == 0) {
     return MSG_PRIVMSG;
