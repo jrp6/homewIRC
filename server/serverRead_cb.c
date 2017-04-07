@@ -5,6 +5,7 @@
 
 #include "connection.h"
 #include "defaults.h"
+#include "hostmask_util.h"
 #include "message.h"
 
 #ifdef SERVER_DEBUG
@@ -41,8 +42,15 @@ void serverRead_cb(struct bufferevent *bev, void *ctx) {
       strcpy(conn->nick, nick);
       break;
     }
-    case MSG_USER:
-      // TODO: Change hostmask
+    case MSG_USER: {
+      char *user = msg.argv[0];
+      char *host = "unknown-host";
+      conn->hostmask = getHostmask(conn->nick, user, host);
+#ifdef SERVER_DEBUG
+      printf("Conn %u: Setting hostmask %s\n", conn->id, conn->hostmask);
+#endif
+      break;
+    }
     case MSG_PING:
     case MSG_PONG:
     case MSG_PRIVMSG:
