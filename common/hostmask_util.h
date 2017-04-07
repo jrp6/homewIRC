@@ -3,5 +3,6 @@
 
 char * getNick(const char *hostmask);
 char * getHostmask(const char *nick, const char *user, const char *host);
+void changeNick(const char *nick, char **hostmaskp);
 
 #endif

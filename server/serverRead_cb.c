@@ -40,6 +40,12 @@ void serverRead_cb(struct bufferevent *bev, void *ctx) {
       free(conn->nick);
       conn->nick = malloc((strlen(nick) + 1) * sizeof(char));
       strcpy(conn->nick, nick);
+      if (conn->hostmask) {
+        changeNick(nick, &(conn->hostmask));
+#ifdef SERVER_DEBUG
+        printf("Conn %u: Changed hostmask to %s\n", conn->id, conn->hostmask);
+#endif
+      }
       break;
     }
     case MSG_USER: {
