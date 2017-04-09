@@ -10,7 +10,7 @@
 
 void transmitPrivmsg(const struct message msg, const struct connection *conn)
 {
-  if (msg.type != MSG_PRIVMSG) {
+  if (msg.type != MSG_PRIVMSG && msg.type != MSG_JOIN && msg.type != MSG_PART) {
     return;
   }
 

@@ -71,9 +71,11 @@ void serverRead_cb(struct bufferevent *bev, void *ctx) {
       replyPing(&msg, bev);
       break;
     case MSG_JOIN:
+      transmitPrivmsg(msg, conn);
       doJoin(msg, conn);
       break;
     case MSG_PART:
+      transmitPrivmsg(msg, conn);
       doPart(msg, conn);
       break;
     case MSG_QUIT:
