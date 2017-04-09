@@ -1,16 +1,21 @@
+#define _GNU_SOURCE
 #include <event2/bufferevent.h>
 #include <search.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <search.h>
+
 #include "connection.h"
 
-//N.B. For good performance, ensure that your C library implements tsearch etc using balanced trees
+// N.B. For good performance, ensure that your C library implements tsearch etc using balanced trees
 
 static void freeConnection(struct connection conn)
 {
   free(conn.nick);
   free(conn.hostmask);
+  tdestroy(conn.channels_root, free);
+  free(conn.channels_root);
 }
 
 static int compareConnections(const void *leftv, const void *rightv)
@@ -26,6 +31,7 @@ static struct connection * dummyConn(unsigned int id)
   conn->id = id;
   conn->nick = NULL;
   conn->hostmask = NULL;
+  conn->channels_root = NULL;
   return conn;
 }
 

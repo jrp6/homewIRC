@@ -8,6 +8,8 @@ struct connection {
   struct bufferevent *bev;
   char *nick;
   char *hostmask;
+  // Pointer to the root of a binary tree, access using tsearch etc
+  char *channels_root;
 };
 
 void removeConnection(const unsigned int id);

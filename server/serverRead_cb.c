@@ -5,6 +5,7 @@
 
 #include "connection.h"
 #include "defaults.h"
+#include "doJoin.h"
 #include "hostmask_util.h"
 #include "message.h"
 #include "transmitPrivmsg.h"
@@ -67,10 +68,14 @@ void serverRead_cb(struct bufferevent *bev, void *ctx) {
     case MSG_PING:
       replyPing(&msg, bev);
       break;
-    case MSG_PONG:
     case MSG_JOIN:
+      doJoin(msg, conn);
+      break;
     case MSG_PART:
+      doPart(msg, conn);
+      break;
     case MSG_QUIT:
+    case MSG_PONG:
     case MSG_CMD_CHANNEL:
     case MSG_RPL_WELCOME:
     case MSG_INVALID:
