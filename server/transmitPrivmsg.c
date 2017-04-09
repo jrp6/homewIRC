@@ -23,7 +23,9 @@ void transmitPrivmsg(const struct message msg, const struct connection *conn)
   struct connection *conn_l;
   for (unsigned int i = 0; i < getNConns(); ++i) {
     if ((conn_l = getConnection(i))) {
-      if (strcmp(conn_l->nick, msg.argv[0]) == 0 || tfind(msg.argv[0], (void **)&(conn_l->channels_root), strcmp_void)) {
+      if (conn_l != conn &&
+          (strcmp(conn_l->nick, msg.argv[0]) == 0 ||
+           tfind(msg.argv[0], (void **)&(conn_l->channels_root), strcmp_void))) {
         bufferevent_write(conn_l->bev, transmitStr, strlen(transmitStr));
       }
     }
