@@ -24,9 +24,9 @@ void command_cb(struct bufferevent *bev_stdin, void *ctx)
     if (*buf == '/') {
       msg = parseMessage(buf + 1);
       if (msg.type == MSG_CMD_CHANNEL) {
+        // Change the currently active channel if the command is CHANNEL or JOIN
         strncpy(currentChannel, msg.argv[0], 128);
       } else if (msg.type != MSG_INVALID) {
-        // Send the command straight to the server if it is valid and not CHANNEL
         if (msg.type == MSG_JOIN) {
           char *channel = msg.argv[msg.argc - 1];
           if (*channel != ':') {
