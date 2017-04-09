@@ -12,6 +12,7 @@ enum message_type {
   MSG_PART,
   MSG_QUIT,
   MSG_CMD_CHANNEL,
+  MSG_RPL_WELCOME,
 };
 
 struct message {
