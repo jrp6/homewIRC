@@ -7,6 +7,7 @@
 #include "defaults.h"
 #include "hostmask_util.h"
 #include "message.h"
+#include "replyPing.h"
 #include "sendWelcome.h"
 
 #ifdef SERVER_DEBUG
@@ -60,6 +61,8 @@ void serverRead_cb(struct bufferevent *bev, void *ctx) {
       break;
     }
     case MSG_PING:
+      replyPing(&msg, bev);
+      break;
     case MSG_PONG:
     case MSG_PRIVMSG:
     case MSG_JOIN:
