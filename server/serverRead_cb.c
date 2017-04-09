@@ -8,6 +8,8 @@
 #include "hostmask_util.h"
 #include "message.h"
 #include "transmitPrivmsg.h"
+#include "replyPing.h"
+#include "sendWelcome.h"
 
 #ifdef SERVER_DEBUG
 #include <stdio.h>
@@ -56,17 +58,21 @@ void serverRead_cb(struct bufferevent *bev, void *ctx) {
 #ifdef SERVER_DEBUG
       printf("Conn %u: Setting hostmask %s\n", conn->id, conn->hostmask);
 #endif
+      sendWelcome(conn, bev);
       break;
     }
     case MSG_PRIVMSG:
       transmitPrivmsg(msg, conn);
       break;
     case MSG_PING:
+      replyPing(&msg, bev);
+      break;
     case MSG_PONG:
     case MSG_JOIN:
     case MSG_PART:
     case MSG_QUIT:
     case MSG_CMD_CHANNEL:
+    case MSG_RPL_WELCOME:
     case MSG_INVALID:
       break;
     }

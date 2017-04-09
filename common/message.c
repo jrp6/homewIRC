@@ -43,6 +43,9 @@ static char * enumtostr(const enum message_type t) {
   case MSG_CMD_CHANNEL:
     return "CHANNEL";
     break;
+  case MSG_RPL_WELCOME:
+    return "001";
+    break;
   case MSG_INVALID:
   default:
     break;
@@ -78,6 +81,9 @@ static enum message_type strtoenum(const char *str) {
   }
   if (strcmp(str, "CHANNEL") == 0) {
     return MSG_CMD_CHANNEL;
+  }
+  if (strcmp(str, "001") == 0) {
+    return MSG_RPL_WELCOME;
   }
   return MSG_INVALID;
 }
