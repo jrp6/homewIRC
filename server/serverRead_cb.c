@@ -77,6 +77,10 @@ void serverRead_cb(struct bufferevent *bev, void *ctx) {
       doPart(msg, conn);
       break;
     case MSG_QUIT:
+      removeConnection(conn->id);
+      free(conn);
+      bufferevent_free(bev);
+      break;
     case MSG_PONG:
     case MSG_CMD_CHANNEL:
     case MSG_RPL_WELCOME:
