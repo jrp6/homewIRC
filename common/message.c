@@ -89,7 +89,7 @@ static enum message_type strtoenum(const char *str) {
 }
 
 int isLocal(enum message_type type) {
-  return type == MSG_CMD_CHANNEL;
+  return type == MSG_CMD_CHANNEL || type == MSG_INVALID;
 }
 
 struct message parseMessage(const char *msgstr_)
