@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "broadcastMsg.h"
 #include "connection.h"
 #include "defaults.h"
 #include "doJoin.h"
@@ -41,6 +42,7 @@ void serverRead_cb(struct bufferevent *bev, void *ctx) {
         printf("Conn %u: Setting initial nick %s\n", conn->id, nick);
       }
 #endif
+      broadcastMsg(msg, conn);
       free(conn->nick);
       conn->nick = malloc((strlen(nick) + 1) * sizeof(char));
       strcpy(conn->nick, nick);
