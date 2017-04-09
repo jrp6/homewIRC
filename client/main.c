@@ -18,7 +18,8 @@ int main(int argc, char **argv)
   // Parse command-line options
   char *server = NULL;
   unsigned int port = DEFAULT_PORT;
-  const char *optstring = "s:p:";
+  char *nick = NULL;
+  const char *optstring = "s:p:n:";
   int c;
   while ((c = getopt(argc, argv, optstring)) != -1) {
     switch (c) {
@@ -28,12 +29,15 @@ int main(int argc, char **argv)
     case 'p':
       port = atoi(optarg);
       break;
+    case 'n':
+      nick = optarg;
+      break;
     default:
       exit(EXIT_FAILURE);
     }
   }
 
-  if (!server) {
+  if (!server || !nick) {
     exit(EXIT_FAILURE);
   }
 
@@ -42,7 +46,7 @@ int main(int argc, char **argv)
   struct bufferevent *bev = bufferevent_socket_new(base, -1, BEV_OPT_CLOSE_ON_FREE);
   struct evdns_base *dns_base = evdns_base_new(base, 1);
 
-  bufferevent_setcb(bev, clientRead_cb, NULL, nick_on_connect_cb, base);
+  bufferevent_setcb(bev, clientRead_cb, NULL, nick_on_connect_cb, nick);
   bufferevent_enable(bev, EV_READ|EV_WRITE);
 
   if (bufferevent_socket_connect_hostname(bev, dns_base, AF_UNSPEC, server, port) < 0) {
