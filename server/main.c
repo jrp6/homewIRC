@@ -11,7 +11,7 @@ int main(void)
 {
   struct event_base *base;
   struct evconnlistener *listener;
-  struct sockaddr_in sin;
+  struct sockaddr_in6 sin;
 
   base = event_base_new();
   if (!base) {
@@ -20,9 +20,9 @@ int main(void)
   }
 
   memset(&sin, 0, sizeof(sin));
-  sin.sin_family = AF_INET;
-  sin.sin_addr.s_addr = htonl(0); // Listen on 0.0.0.0
-  sin.sin_port = htons(DEFAULT_PORT);
+  sin.sin6_family = AF_INET6;
+  sin.sin6_addr = in6addr_any;
+  sin.sin6_port = htons(DEFAULT_PORT);
 
   listener = evconnlistener_new_bind(base, accept_conn_cb, NULL, LEV_OPT_CLOSE_ON_FREE|LEV_OPT_REUSEABLE,
                                      -1, (struct sockaddr*)&sin, sizeof(sin));
