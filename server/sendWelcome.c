@@ -23,6 +23,8 @@ void sendWelcome(struct connection *conn, struct bufferevent *bev)
   char *msgstr = stringifyMessage(msg);
   bufferevent_write(bev, msgstr, strlen(msgstr));
 
+  // Do not call freeMessage because argv[0] is referenced by conn
   free(msg.argv[1]);
+  free(msg.argv);
   free(msgstr);
 }

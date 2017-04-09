@@ -1,5 +1,6 @@
 #include <event2/bufferevent.h>
 #include <search.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "connection.h"
@@ -27,4 +28,5 @@ void transmitPrivmsg(const struct message msg, const struct connection *conn)
       }
     }
   }
+  free(transmitStr);
 }

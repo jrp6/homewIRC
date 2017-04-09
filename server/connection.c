@@ -42,9 +42,7 @@ void removeConnection(const unsigned int id)
   struct connection *toRemove = getConnection(id);
   if (toRemove) {
     freeConnection(*toRemove);
-    struct connection *c = dummyConn(id);
-    tdelete(c, &root, compareConnections);
-    free(c);
+    tdelete(toRemove, &root, compareConnections);
   }
 }
 
