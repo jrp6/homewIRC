@@ -15,7 +15,6 @@ static void freeConnection(struct connection conn)
   free(conn.nick);
   free(conn.hostmask);
   tdestroy(conn.channels_root, free);
-  free(conn.channels_root);
 }
 
 static int compareConnections(const void *leftv, const void *rightv)
@@ -62,7 +61,7 @@ struct connection * getConnection(const unsigned int id)
   struct connection *c = dummyConn(id);
   struct connection **ct = tfind(c, &root, compareConnections);
   free(c);
-  return *ct;
+  return ct ? *ct : NULL;
 }
 
 unsigned int getNConns(void)
