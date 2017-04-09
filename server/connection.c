@@ -1,6 +1,8 @@
+#include <event2/bufferevent.h>
 #include <search.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "connection.h"
 
 //N.B. For good performance, ensure that your C library implements tsearch etc using balanced trees
@@ -41,9 +43,10 @@ void removeConnection(const unsigned int id)
   }
 }
 
-struct connection * newConnection(void)
+struct connection * newConnection(struct bufferevent *bev)
 {
   struct connection *c = dummyConn(nConns++);
+  c->bev = bev;
   struct connection **ct = tsearch(c, &root, compareConnections);
   return *ct;
 }

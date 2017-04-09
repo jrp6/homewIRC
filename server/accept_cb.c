@@ -22,7 +22,7 @@ void accept_conn_cb(struct evconnlistener *listener, evutil_socket_t fd,
   struct bufferevent *bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
 
   // Add callback that prints everything we get
-  bufferevent_setcb(bev, serverRead_cb, NULL, close_on_error_eof_cb, newConnection());
+  bufferevent_setcb(bev, serverRead_cb, NULL, close_on_error_eof_cb, newConnection(bev));
 
   bufferevent_enable(bev, EV_READ|EV_WRITE);
 

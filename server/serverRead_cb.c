@@ -7,6 +7,7 @@
 #include "defaults.h"
 #include "hostmask_util.h"
 #include "message.h"
+#include "transmitPrivmsg.h"
 
 #ifdef SERVER_DEBUG
 #include <stdio.h>
@@ -57,9 +58,11 @@ void serverRead_cb(struct bufferevent *bev, void *ctx) {
 #endif
       break;
     }
+    case MSG_PRIVMSG:
+      transmitPrivmsg(msg, conn);
+      break;
     case MSG_PING:
     case MSG_PONG:
-    case MSG_PRIVMSG:
     case MSG_JOIN:
     case MSG_PART:
     case MSG_QUIT:
